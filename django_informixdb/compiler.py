@@ -21,19 +21,29 @@ class SQLCompiler(compiler.SQLCompiler):
         return raw_sql.replace(r'%s', '?'), fields
 
 
+def _list2tuple(arg):
+    return tuple(arg) if isinstance(arg, list) else arg
+
+
 class SQLInsertCompiler(compiler.SQLInsertCompiler, SQLCompiler):
     def as_sql(self):
         result = super(SQLInsertCompiler, self).as_sql()
-        return [(ret[0].replace(r'%s', '?'), tuple(ret[1])) for ret in result]
+        return [(ret[0].replace(r'%s', '?'), _list2tuple(ret[1])) for ret in result]
 
 
 class SQLAggregateCompiler(compiler.SQLAggregateCompiler, SQLCompiler):
-    pass
+    def as_sql(self):
+        result = super(SQLAggregateCompiler, self).as_sql()
+        return result[0].replace(r'%s', '?'), result[1]
 
 
 class SQLDeleteCompiler(compiler.SQLDeleteCompiler, SQLCompiler):
-    pass
+    def as_sql(self):
+        result = super(SQLDeleteCompiler, self).as_sql()
+        return result[0].replace(r'%s', '?'), result[1]
 
 
 class SQLUpdateCompiler(compiler.SQLUpdateCompiler, SQLCompiler):
-    pass
+    def as_sql(self):
+        result = super(SQLUpdateCompiler, self).as_sql()
+        return result[0].replace(r'%s', '?'), result[1]

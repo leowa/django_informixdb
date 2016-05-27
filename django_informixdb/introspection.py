@@ -117,12 +117,13 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         where st.tabname = '{}'"""
 
         # reverse name, and index here
-        all_columns = {v: k for k, v in self._get_col_index().items()}
+        all_columns = {v: k for k, v in
+                       self._get_col_index(cursor, table_name).items()}
         cursor.execute(index_query.format(table_name))
         for name, idx_type, keys in cursor.fetchall():
             # keys are in the format like "1 [1], 4 [1], 7 [1]",
             # which means including column #1, #4, and #7
-            columns = [all_columns[k.strip().split()[0]] for k in keys.split(',')]
+            columns = [all_columns[int(k.strip().split()[0]) - 1] for k in keys.split(',')]
             constraints[name] = {
                 'columns': columns,
                 'primary_key': len(columns) == 1 and idx_type == 'U',

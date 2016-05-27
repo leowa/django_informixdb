@@ -6,9 +6,9 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     sql_create_unique = "ALTER TABLE %(table)s ADD CONSTRAINT UNIQUE (%(columns)s) CONSTRAINT %(name)s "
     sql_create_fk = (
         "ALTER TABLE %(table)s ADD CONSTRAINT FOREIGN KEY (%(column)s) "
-        "REFERENCES %(to_table)s (%(to_column)s) ON DELETE CASCADE CONSTRAINT  %(name)s)"
+        "REFERENCES %(to_table)s (%(to_column)s) ON DELETE CASCADE CONSTRAINT  %(name)s"
     )
-
+    sql_create_column = "ALTER TABLE %(table)s ADD %(column)s %(definition)s"
     sql_alter_column_null = "MODIFY %(column)s %(type)s NULL"
     sql_alter_column_not_null = "MODIFY %(column)s %(type)s NOT NULL"
     sql_alter_column_type = "MODIFY %(column)s %(type)s"

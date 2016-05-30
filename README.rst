@@ -55,9 +55,15 @@ db:
     }
 
 
-Corresponding informixdb connection:
-------------------------------------
+Corresponding informixdb python connection:
+-------------------------------------------
 ::
 
-    conn = informixdb.connect('d_1463994398130014@ifxserver1', 'xblebtlh', 'BbynQOHesR')
+    import informixdb
+    conn = informixdb.connect('myproject@ifxserver', 'testuser', 'passw0rd')
+    cursor = conn.cursor()
+    cursor.execute('select tabname from systables')
+    cursor.fetchall()
+    cursor.close()
+    conn.close()
 
